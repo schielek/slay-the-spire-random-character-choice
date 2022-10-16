@@ -1,45 +1,68 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import Counter from './lib/Counter.svelte'
+  import Character from './lib/Character.svelte';
+
+  let characters = [
+    { name: "Ironclad", disabled: false },
+    { name: "Silent", disabled: false },
+    { name: "Defect", disabled: false },
+    { name: "Watcher", disabled: false },
+  ];
+
+  let choice = null;
+
+  $: buttonText = choice ? "Reset" : "Roll the dice!";
+
+  $: choosableChars = characters.filter(it => !it.disabled);
+
+  function click() {
+    if (choice) {
+      characters.map(it => it.chosen = false);
+      choice = null;
+    } else {
+      if (choosableChars.length === 0) return;
+      choice = choosableChars[Math.floor(Math.random() * choosableChars.length)];
+      choice.chosen = true;
+    }
+  }
 </script>
 
 <main>
+  <h1>Let faith chose your hero...</h1>
+
+  <div class="chars">
+    {#each characters as character, index}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <span class="char" on:click={() => { character.disabled = !character.disabled}}>
+        <Character {...character} chosen={!!choice && character.name === choice.name} />
+      </span>
+    {/each}
+  </div>
+
+  <button on:click={click}>{buttonText}</button>
+
   <div>
-    <a href="https://vitejs.dev" target="_blank"> 
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank"> 
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
+    <p>
+      Click on a character to include/exclude it from choice.
+    </p>
+
+    <p class="disclaimer">
+      All assets taken from the official <a href="https://slay-the-spire.fandom.com/wiki/">Slay the Spire Wiki</a>.
+    </p>
   </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  .char {
+    cursor: pointer;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
+
+  .disclaimer {
     color: #888;
   }
 </style>
