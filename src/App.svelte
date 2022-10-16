@@ -27,7 +27,7 @@
 </script>
 
 <main>
-  <h1>Let faith chose your hero...</h1>
+  <h1>Let faith choose your hero...</h1>
 
   <div class="chars">
     {#each characters as character, index}
