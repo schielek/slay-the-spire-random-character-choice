@@ -2,8 +2,6 @@
 
 An app to select a random character for the video game Slay the Spire.
 
-This template should help get you started developing with Svelte in Vite.
-
 # Development
 
 Initialize:
