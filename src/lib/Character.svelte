@@ -28,13 +28,15 @@
   })
 </script>
 
-<img 
-  src={assets[name]}
-  alt={name}
-  class:disabled
-  class:chosen
-  bind:this={image}
-  />
+<span class:chosen>
+  <img 
+    src={assets[name]}
+    alt={name}
+    class:disabled
+    class:chosen
+    bind:this={image}
+    />
+</span>
 
 <style>
   img {
@@ -46,7 +48,27 @@
     opacity: 0.25;
   }
 
-  .chosen {
-    transform: scale(1.5);
+  @keyframes pulse {
+    from {
+      transform: scale(1.0);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+
+  img.chosen {
+    transform: scale(1.4);
+  }
+
+  span.chosen {
+    display: inline-block;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 </style>
