@@ -3,6 +3,7 @@
   import silent from '../assets/Silent.webp';
   import defect from '../assets/Defect.webp';
   import watcher from '../assets/Watcher.webp';
+  import party, { Circle, variation } from "party-js";
 
   export let name;
   export let disabled;
@@ -14,6 +15,17 @@
     "Defect": defect,
     "Watcher": watcher,
   }
+
+  let image;
+  $: imageRect = (image == undefined) && !chosen  ? null : image.getBoundingClientRect();
+  $: console.log(imageRect)
+
+  $: if(chosen) party.confetti(new Circle((imageRect.left + imageRect.right) / 2, imageRect.top - 0.1 * (imageRect.top - imageRect.bottom), 3), {
+    count: 80,
+    spread: 30,
+    size: variation.skew(1.2, 0.8),
+    speed: variation.range(400, 700),
+  })
 </script>
 
 <img 
@@ -21,6 +33,7 @@
   alt={name}
   class:disabled
   class:chosen
+  bind:this={image}
   />
 
 <style>
